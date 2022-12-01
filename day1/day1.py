@@ -11,10 +11,6 @@ def main():
     print(answer, 'puzzle')
 
 
-# problem with reading the file somehow reads newlines so:
-# def no_newlines(lst):
-
-
 def find_max(lst):
     # returns max sum of all sums
     sum_list = []
