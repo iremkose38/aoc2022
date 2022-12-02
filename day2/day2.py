@@ -6,7 +6,9 @@ with open('input.txt', 'r') as temp_file:
 
 def main():
     result = strategy(plays)
-    print(result)
+    print(result, 'part 1')
+    result2 = new_strategy(plays)
+    print(result2, 'part 2')
 
 def strategy(lst):
     score = 0
@@ -41,8 +43,39 @@ def value(play):
         return 2
     elif play == 'C' or play == 'Z': #scissors
         return 3
+
+def new_strategy(lst):
+    score = 0
+    for part in lst:
+        play = list(part)
+        opponent = value(play[0])
+        you = play[2]
+        # now game state is defined differently
+        if you == 'X': #lose
+            # only score of play
+            if opponent == 1:
+                score += 3
+            elif opponent == 2:
+                score += 1
+            elif opponent == 3:
+                score += 2
+        elif you == 'Y': # draw
+            you = opponent
+            score += you + 3
+        elif you == 'Z': #value of winning play
+            if opponent == 1:
+                score += 2 + 6
+            elif opponent == 2:
+                score += 3 + 6
+            elif opponent == 3:
+                score += 1 + 6
+    return score
+
 main()
 
 # test example
 example = ['A Y', 'B X', 'C Z']
 assert(strategy(example) == 15)
+
+example2 = ['A Y', 'B X', 'C Z']
+assert(new_strategy(example2) == 12)
