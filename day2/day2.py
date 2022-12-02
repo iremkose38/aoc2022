@@ -14,9 +14,9 @@ def strategy(lst):
         play = list(part)
         opponent = value(play[0])
         you = value(play[2])  #space is [1]
-        # shape
+        # shape score
         score += you
-        # draw with same plays
+        # play state score
         if opponent == you:
             # game state is draw
             score += 3
@@ -26,18 +26,23 @@ def strategy(lst):
                 (opponent == 3 and you == 1):
             # you won
             score += 6
+    return score
 
 def value(play):
     """
-    paper = 2           "X" Paper defeats Rock; if rock -> paper
-    scissors = 3        "Y" Scissors defeats Paper; if paper -> scissors
-    rock = 1            "Z" Rock defeats Scissors; if scissors -> rock
+    rock = 1             X, A - Rock defeats Scissors; if scissors -> rock
+    paper = 2            B, Y - Paper defeats Rock; if rock -> paper
+    scissors = 3         C, Z - Scissors defeats Paper; if paper -> scissors
+
     """
-    if play == 'A' or play == 'Z': #rock
+    if play == 'A' or play == 'X': #rock
         return 1
-    elif play == 'B' or play == 'X': #paper
+    elif play == 'B' or play == 'Y': #paper
         return 2
-    elif play == 'C' or play == 'Y': #scissors
+    elif play == 'C' or play == 'Z': #scissors
         return 3
 main()
-# tests maybe
+
+# test example
+example = ['A Y', 'B X', 'C Z']
+assert(strategy(example) == 15)
