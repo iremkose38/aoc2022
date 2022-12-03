@@ -8,34 +8,29 @@ def main():
     print('puzzle answer: ', answer)
 
 def puzzle(lst):
-    # difference between lower and uppercase !
     sum_priorities = 0
-    for rucksack in lst_rucksacks:
-        # find index of split: if not even length, take rounded value
-        split = round(len(rucksack) // 2)
-        compartment1 = rucksack[:split]
-        compartment2 = rucksack[split+1:]
-        # equal item(s):
-        items = find_item(compartment1, compartment2)
-        if items is not None:
-            # priority value
-            for item in items:
-                value = calculate_priority(item)
-                sum_priorities += value
+    for rucksack in lst:
+        # find index of split: always even because compartments have even amount of items.
+        split = len(rucksack) // 2
+        compartment1 = rucksack[:split-1]
+        compartment2 = rucksack[split:]
+
+        equal_item = find_item(compartment1, compartment2)
+        if equal_item is not None:
+            value = calculate_priority(equal_item)
+            sum_priorities += value
     return sum_priorities
 
 def find_item(comp1, comp2):
-    # find item that's in both compartments
-    equal_items = []
-    for item in comp1:
-        for item2 in comp2:
+    list1 = list(comp1)
+    list2 = list(comp2)
+    # The Elf that did the packing failed to follow this rule for exactly one item type per rucksack.
+    for item in list1:
+        for item2 in list2:
             if item == item2:
-                # equal item is found
-                equal_items.append(item)
-            else:
-                # no equal items?
-                return None
-    return equal_items
+                return item
+    # example: 'RQFLStFvdcBbzdJbJM' has no equal in compartments
+    return None
 
 def calculate_priority(item):
     # Lowercase item types a through z have priorities 1 through 26.
@@ -52,6 +47,5 @@ def calculate_priority(item):
 
 main()
 # test
-rucksacks_example = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg'
-                                                                                     'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', 'CrZsJsPPZsGzwwsLwLmpwMDw']
+rucksacks_example = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg', 'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', 'CrZsJsPPZsGzwwsLwLmpwMDw']
 assert(puzzle(rucksacks_example) == 157)
