@@ -3,9 +3,55 @@ with open('input.txt', 'r') as temp_file:
     # example of input
     # ['FzQrhQpJtJMFzlpplrTWjTnTTrjVsVvvTnTs', 'mScqSqqgcfPCqGPZcfGNSvTNsVVNSjNvWSNsNz', ...]
 
+
 def main():
+    # part one
     answer = puzzle(lst_rucksacks)
     print("answer of puzzle:", answer)
+    # part two
+    answer = puzzle2(lst_rucksacks)
+    print("answer of second puzzle:", answer)
+
+
+def puzzle2(lst):
+    # handle rucksacks per 3, create sublist
+    sublists = split(lst)
+    sum_equals = 0
+    for team in sublists:
+        equal = comparison3(team)
+        # get priority if equal element
+        value = calculate(equal)
+        sum_equals += value
+    return sum_equals
+
+
+def comparison3(lst):
+    # convert lists to sets
+    person1 = set(lst[0])
+    person2 = set(lst[1])
+    person3 = set(lst[2])
+    # find intersection of three sets
+    value = person1.intersection(person2)
+    value2 = value.intersection(person3)
+    # convert back to list
+    for item in value2:
+        return item
+
+
+def split(lst):
+    # amount of sublists?
+    sublists = []
+    amount = len(lst)//3
+    i = 0  # first sublists are [0:3], [3:6]
+    j = 3
+    while amount > 0:
+        new_list = lst[i: j]
+        i += 3
+        j += 3
+        sublists.append(new_list)
+        amount -= 1
+    return sublists
+
 
 def puzzle(lst):
     sum_priorities = 0
@@ -17,7 +63,7 @@ def puzzle(lst):
         compartment1 = rucksack[0:split]
         compartment2 = rucksack[split:]
         # compare the two to find equal element
-        element = comparison(compartment1, compartment2)
+        element = comparison2(compartment1, compartment2)
         # element could be None, so different cases
         if element is not None:
             # calculate priority of equal element
@@ -26,7 +72,8 @@ def puzzle(lst):
         # else, do nothing bcs no priority to add
     return sum_priorities
 
-def comparison(compartment1, compartment2):
+
+def comparison2(compartment1, compartment2):
     for element in compartment1:
         for other in compartment2:
             if element == other:
@@ -34,6 +81,7 @@ def comparison(compartment1, compartment2):
                 return element
     # if out of loop without returning equal element, there is no equal
     return None
+
 
 def calculate(letter):
     # Lowercase item types a through z have priorities 1 through 26 -> filler 0
@@ -45,7 +93,11 @@ def calculate(letter):
     return alphabet.index(letter)
 
 main()
-# TEST
+# TESTs
 rucksacks_example = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg',
                      'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', 'CrZsJsPPZsGzwwsLwLmpwMDw']
 assert(puzzle(rucksacks_example) == 157)
+
+group = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg',
+          'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', ' CrZsJsPPZsGzwwsLwLmpwMDw']
+assert(puzzle2(group) == 70)
