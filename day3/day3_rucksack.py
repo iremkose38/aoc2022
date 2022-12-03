@@ -5,47 +5,47 @@ with open('input.txt', 'r') as temp_file:
 
 def main():
     answer = puzzle(lst_rucksacks)
-    print('puzzle answer: ', answer)
+    print("answer of puzzle:", answer)
 
 def puzzle(lst):
     sum_priorities = 0
+    # handle per rucksack in list
     for rucksack in lst:
-        # find index of split: always even because compartments have even amount of items.
+        # find split index
         split = len(rucksack) // 2
-        compartment1 = rucksack[:split-1]
+        # find first and second compartment by slicing
+        compartment1 = rucksack[0:split]
         compartment2 = rucksack[split:]
-
-        equal_item = find_item(compartment1, compartment2)
-        if equal_item is not None:
-            value = calculate_priority(equal_item)
-            sum_priorities += value
+        # compare the two to find equal element
+        element = comparison(compartment1, compartment2)
+        # element could be None, so different cases
+        if element is not None:
+            # calculate priority of equal element
+            priority = calculate(element)
+            sum_priorities += priority
+        # else, do nothing bcs no priority to add
     return sum_priorities
 
-def find_item(comp1, comp2):
-    list1 = list(comp1)
-    list2 = list(comp2)
-    # The Elf that did the packing failed to follow this rule for exactly one item type per rucksack.
-    for item in list1:
-        for item2 in list2:
-            if item == item2:
-                return item
-    # example: 'RQFLStFvdcBbzdJbJM' has no equal in compartments
+def comparison(compartment1, compartment2):
+    for element in compartment1:
+        for other in compartment2:
+            if element == other:
+                # found equal one
+                return element
+    # if out of loop without returning equal element, there is no equal
     return None
 
-def calculate_priority(item):
-    # Lowercase item types a through z have priorities 1 through 26.
+def calculate(letter):
+    # Lowercase item types a through z have priorities 1 through 26 -> filler 0
     # Uppercase item types A through Z have priorities 27 through 52.
     # find priority by index in following alphabet list:
-    alphabet = [0]
-    for j in range(97, 123): # lower case
-        alphabet.append(chr(j))
-    for i in range(65, 91): # upper case
-        alphabet.append(chr(i))
-    # take value out of list index
-    value = alphabet.index(item)
-    return value
+    alphabet = [0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+                'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    return alphabet.index(letter)
 
 main()
-# test
-rucksacks_example = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg', 'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', 'CrZsJsPPZsGzwwsLwLmpwMDw']
+# TEST
+rucksacks_example = ['vJrwpWtwJgWrhcsFMMfFFhFp', 'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL', 'PmmdzqPrVvPwwTWBwg',
+                     'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn', 'ttgJtRGJQctTZtZT', 'CrZsJsPPZsGzwwsLwLmpwMDw']
 assert(puzzle(rucksacks_example) == 157)
