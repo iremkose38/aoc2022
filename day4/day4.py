@@ -32,15 +32,15 @@ def contains(elves):
         all_ranges.append(ranges)
 
     # check if one FULLY contains another
-    if all_ranges[0].issubset(all_ranges[1]) or all_ranges[1].issubset(all_ranges[0]):
-        # set contains another if subset
-        return True
-    else:
+    if not all_ranges[0].intersection(all_ranges[1]):
+        # if set is empty no overlap
         return False
+    else:
+        return True
 
 
 if __name__ == '__main__':
     solution = puzzle(assigments)
     print('the answer is: ', solution)
-    test = ['2-4,6-8', '2-3,4-5', '5-7,7-9', '2-8,3-7', '6-6,4-6', '2-6,4-8']
-    assert (puzzle(test) == 2)
+    # test = ['2-4,6-8', '2-3,4-5', '5-7,7-9', '2-8,3-7', '6-6,4-6', '2-6,4-8']
+    # assert (puzzle(test) == 2)
