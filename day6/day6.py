@@ -15,7 +15,7 @@ def puzzle(lst):
             # add letter either way to marker, then check if marker is valid
             marker.append(letter)
             processed += 1
-            if len(marker) == 4:
+            if len(marker) == 14:
             # if len correct check for duplicates
                 if check(marker):
                     # if marker is valid, no more checking other char
@@ -47,8 +47,9 @@ if __name__ == '__main__':
     solution = puzzle(datastream)
     print("solution of the puzzle: ", solution)
 
-    #TESTS
+    #TESTS part one
     #OK
+    """
     example = ['bvwbjplbgvbhsrlpgdmjqwftvncz']
     # assert(puzzle(example) == 5)
 
@@ -60,3 +61,20 @@ if __name__ == '__main__':
 
     example4 = ['zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw']
     assert(puzzle(example4) == 11)
+    """
+
+    #part two
+    example = ['mjqjpqmgbljsphdztnvjfqwrcgsmlb']
+    assert(puzzle(example) == 19)
+
+    example2 = ['bvwbjplbgvbhsrlpgdmjqwftvncz']
+    assert(puzzle(example2) == 23)
+
+    example3 = ['nppdvjthqldpwncqszvftbrmjlhg']
+    assert(puzzle(example2) == 23)
+
+    example4 = ['nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg']
+    assert(puzzle(example4) == 29)
+
+    example5 = ['zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw']
+    assert(puzzle(example5) == 26)
